@@ -1,0 +1,49 @@
+CHEAT SHEET FOR STARTING NEW MVC PROJECT AND ALL PACKAGES TO USE MYSQL DATABASE IN PROJECT:
+
+• dotnet add package Pomelo.EntityFrameworkCore.MySql --version 3.1.1
+• dotnet add package Microsoft.EntityFrameworkCore.Design --version 3.1.5
+
+- MODEL CLASS
+• using System;
+• using System.ComponentModel.DataAnnotations;
+• using System.ComponentModel.DataAnnotations.Schema;
+
+- MODEL CONTEXT
+• using Microsoft.EntityFrameworkCore;
+
+- APPSETTINGS.JSON
+• "," after "AllowedHosts" then enter and put in:     
+	"DBInfo":
+    {
+        "Name": "MySQLconnect",
+        "ConnectionString": "server=localhost;userid=root;password=root;port=3306;database=*nameofdatabasedb*;SslMode=None"
+    }
+
+- STARTUP.cs
+• using *namespace*.Models;
+• using Microsoft.EntityFrameworkCore;
+• In configure services add "services.AddDbContext<MyContext>(options => options.UseMySql (Configuration["DBInfo:ConnectionString"]));"
+
+- HOMECONTROLLER.cs
+• using Microsoft.EntityFrameworkCore;
+• using *namespace*.Models;
+• using System.Linq;
+•
+        private MyContext dbContext;
+
+        public HomeController(MyContext context)
+        {
+            dbContext = context;
+        }
+
+- MIGRATIONS
+• dotnet ef migrations add YourMigrationName
+• dotnet ef database update
+
+- HASHPASSWORDS(HomeController)
+• using Microsoft.AspNetCore.Identity;
+• if(ModelState.IsValid)
+	{
+		PasswordHasher<User> Hasher = new PasswordHasher<User>();
+                user.Password = Hasher.HashPassword(user, user.Password);
+	}
