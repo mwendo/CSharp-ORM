@@ -23,25 +23,56 @@ namespace CRUDelicious.Controllers
         public IActionResult Index()
         {
             // Get All Dishes
-            ViewBag.AllDishes = dbContext.Dishes.ToList();
+            ViewBag.AllDishes = dbContext.Dishes
+                                .Include(d => d.Creator)
+                                .ToList();
             return View();
+        }
+
+        [HttpGet("chefs")]
+        public IActionResult Chefs()
+        {
+            ViewBag.Chefs = dbContext.Chefs.Include(u => u.CreatedDishes).ToList();
+            return View("Chefs");
+        }
+
+        [HttpGet("add/chef")]
+        public IActionResult NewChef()
+        {
+            return View("AddChef");
+        }
+
+        [HttpPost("addChef")]
+        public IActionResult AddChef(Chef newChef)
+        {
+            if(ModelState.IsValid)
+            {
+                dbContext.Add(newChef);
+                dbContext.SaveChanges();
+                return RedirectToAction("Chefs");
+            } else {
+                return View("AddChef");
+            }
         }
 
         [HttpGet("new")]
         public IActionResult NewDish()
         {
+            ViewBag.Chefs = dbContext.Chefs.ToList();
             return View("NewDish");
         }
 
         [HttpPost("addDish")]
         public IActionResult AddDish(Dish newDish)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 dbContext.Add(newDish);
                 dbContext.SaveChanges();
                 return RedirectToAction("Index");
-            } else {
+            }
+            else
+            {
                 return View("NewDish");
             }
         }
@@ -66,6 +97,7 @@ namespace CRUDelicious.Controllers
         public IActionResult Edit(int DishesId)
         {
             Dish DishToEdit = dbContext.Dishes.FirstOrDefault(dish => dish.DishesId == DishesId);
+            ViewBag.Chefs = dbContext.Dishes.Include(d => d.Creator).ToList();
             return View("Edit", DishToEdit);
         }
 
@@ -74,7 +106,7 @@ namespace CRUDelicious.Controllers
         {
             Dish DishToEdit = dbContext.Dishes.FirstOrDefault(dish => dish.DishesId == DishesId);
             DishToEdit.Name = EditDish.Name;
-            DishToEdit.Chef = EditDish.Chef;
+            DishToEdit.ChefId = EditDish.ChefId;
             DishToEdit.Calories = EditDish.Calories;
             DishToEdit.Tastiness = EditDish.Tastiness;
             DishToEdit.Description = EditDish.Description;

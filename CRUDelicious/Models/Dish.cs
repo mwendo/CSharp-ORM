@@ -13,7 +13,7 @@ namespace CRUDelicious.Models
         [Required]
         public string Name { get; set; }
         [Required]
-        public string Chef { get; set; }
+        public int ChefId { get; set; }
         [Required]
         [Range(0,5)]
         public int Tastiness {get;set;}
@@ -24,5 +24,7 @@ namespace CRUDelicious.Models
         public string Description {get;set;}
         public DateTime CreatedAt {get;set;} = DateTime.Now;
         public DateTime UpdatedAt {get;set;} = DateTime.Now;
+        // Navigation property for related Chef object
+        public Chef Creator {get;set;}
     }
 }

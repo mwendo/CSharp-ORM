@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRUDelicious.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20210617222304_FirstMigration")]
+    [Migration("20210621211102_FirstMigration")]
     partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,6 +18,34 @@ namespace CRUDelicious.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("CRUDelicious.Models.Chef", b =>
+                {
+                    b.Property<int>("ChefId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("DOB")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("ChefId");
+
+                    b.ToTable("Chefs");
+                });
 
             modelBuilder.Entity("CRUDelicious.Models.Dish", b =>
                 {
@@ -28,16 +56,18 @@ namespace CRUDelicious.Migrations
                     b.Property<int>("Calories")
                         .HasColumnType("int");
 
-                    b.Property<string>("Chef")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<int>("ChefId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("Tastiness")
@@ -48,7 +78,18 @@ namespace CRUDelicious.Migrations
 
                     b.HasKey("DishesId");
 
+                    b.HasIndex("ChefId");
+
                     b.ToTable("Dishes");
+                });
+
+            modelBuilder.Entity("CRUDelicious.Models.Dish", b =>
+                {
+                    b.HasOne("CRUDelicious.Models.Chef", "Creator")
+                        .WithMany("CreatedDishes")
+                        .HasForeignKey("ChefId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

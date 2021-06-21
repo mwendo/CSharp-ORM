@@ -2,8 +2,9 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1>Welcome to CRUDelicious</h1>
+<div class="chefdish">
+    <a href="/chefs">Chefs |</a>
+    <a href="/"> Dishes</a>
 </div>
 
 <div class="middle">
@@ -14,8 +15,21 @@
 <hr>
 
 <div class="dishItems">
-    @foreach(Dish d in ViewBag.AllDishes)
-    {
-        <p><a href="/details/@d.DishesId">@d.Name</a> by @d.Chef</p>
-    }
+    <table class="table table-striped">
+        <tr>
+            <th>Name</th>
+            <th>Chef</th>
+            <th>Tastiness</th>
+            <th>Calories</th>
+        </tr>
+        @foreach(Dish d in ViewBag.AllDishes)
+        {
+            <tr>
+                <td>@d.Name</td>
+                <td>@d.Creator.FirstName @d.Creator.LastName</td>
+                <td>@d.Tastiness</td>
+                <td>@d.Calories</td>
+            </tr>
+        }
+    </table>
 </div>

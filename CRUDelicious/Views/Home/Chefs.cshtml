@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="chefdish">
+    <a href="/chefs">Chefs | </a>
+    <a href="/">Dishes</a>
+</div>
+
+<div class="middle">
+    <h3>Check out our roster of Chefs!</h3>
+    <a href="/add/chef">Add a Chef</a>
+</div>
+
+<hr>
+
+<div class="dishItems">
+    <table class="table table-striped">
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th># of Dishes</th>
+        </tr>
+        @foreach (Chef d in ViewBag.Chefs)
+        {
+            <tr>
+                <td>@d.FirstName @d.LastName</td>
+                @if (DateTime.Now.DayOfYear < d.DOB.DayOfYear)
+                {
+                    <td>@((DateTime.Now.Year - d.DOB.Year) -1 )</td>
+                }
+                else
+                {
+                    <td>@(DateTime.Now.Year - d.DOB.Year)</td>
+                }
+                @if (d.CreatedDishes != null)
+                {
+                    <td>@d.CreatedDishes.Count</td>
+                }
+                else
+                {
+                    <td>0</td>
+                }
+            </tr>
+        }
+    </table>
+</div>
