@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SportsORM.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace SportsORM.Controllers
@@ -67,6 +68,28 @@ namespace SportsORM.Controllers
         [HttpGet("level_2")]
         public IActionResult Level2()
         {
+            // All Teams in the Atlantic Soccer Conference
+            ViewBag.AtlSocCon = _context.Teams.Include(u => u.CurrLeague).Where(u => u.CurrLeague.Name.Contains("Atlantic Soccer Conference")).ToList();
+
+            // All (current) players on the Boston Penguines
+            ViewBag.BostonPenguins = _context.Players.Include(u => u.CurrentTeam).Where(u => u.CurrentTeam.TeamName.Contains("Penguins") && u.CurrentTeam.Location.Contains("Boston")).ToList();
+
+            // All (current) players in the International Collegiate Baseball Conerence
+            ViewBag.IntBaseballConf = _context.Players.Include(u => u.CurrentTeam).Where(u => u.CurrentTeam.CurrLeague.Name.Contains("International Collegiate Baseball Conference")).ToList();
+
+            // All (current) players in the American Conference of Amateur Football with last name "Lopez"
+            ViewBag.Lopez = _context.Players.Include(u => u.CurrentTeam).Where(u => u.CurrentTeam.CurrLeague.Name.Contains("American Conference of Amateur Football") && u.LastName.Contains("Lopez")).ToList();
+
+            // All football players
+            ViewBag.AllFootabllPlayers = _context.Players.Include(u => u.CurrentTeam).Where(u => u.CurrentTeam.CurrLeague.Sport.Contains("Football")).ToList();
+
+            // All teams with a (current) player named "Sophia"
+            List<Player> Teamz = _context.Players.Include(u => u.CurrentTeam).Where(u => u.FirstName == "Sophia").ToList();
+            ViewBag.Sophia = Teamz;
+
+            ViewBag.Leaguez = _context.Players.Include(u => u.CurrentTeam.CurrLeague).Where(u => u.FirstName == "Sophia").ToList();
+
+            ViewBag.Flores = _context.Players.Include(u => u.CurrentTeam).Where(u => u.LastName == "Flores" && u.CurrentTeam.TeamName != "Washington Roughriders").ToList();
             return View();
         }
 
