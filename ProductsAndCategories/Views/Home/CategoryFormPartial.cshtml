@@ -1,0 +1,13 @@
+@model Category
+
+<div>
+    <h2 class="title headers">New Category</h2>
+    <form action="/add/category" method="post">
+        <div class="form-group">
+            <span asp-validation-for="Name"></span>
+            <label for="Name">Name</label>
+            <input class="form-control" asp-for="Name">
+        </div>
+        <button class="btn btn-primary">Create</button>
+    </form>
+</div>

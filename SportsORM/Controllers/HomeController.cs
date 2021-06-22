@@ -96,6 +96,19 @@ namespace SportsORM.Controllers
         [HttpGet("level_3")]
         public IActionResult Level3()
         {
+            // All teams past or present that Samuel Evans has played on
+            ViewBag.SEvans = _context.Players.Include(u => u.AllTeams).ThenInclude(x => x.TeamOfPlayer).FirstOrDefault(u => u.FirstName == "Samuel" && u.LastName == "Evans");
+
+            // All players, past and present, with the Manitoba Tiger-Cats
+            ViewBag.Tiger = _context.Teams
+                            .Include(u => u.AllPlayers)
+                            .ThenInclude(x => x.PlayerOnTeam)
+                            .Include(u => u.CurrentPlayers)
+                            .Where(u => u.TeamName == "Tiger-Cats" && u.Location == "Manitoba")
+                            .ToList();
+
+            // All players who were formerly (but aren't currently) with the Wichita Vikings
+            // ViewBag.Vikings = _context.Teams.Include(u => u.AllPlayers).ThenInclude(x => x.TeamOfPlayer).Where(u => !u.CurrentPlayers)
             return View();
         }
 

@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="prodscats">
+    <a href="/">Products |</a>
+    <a href="/categories"> Categories</a>
+</div>
+
+<div class="main-content">
+    <div class="prod_partial col-6">
+        <partial name="ProductFormPartial"/>
+    </div>
+    <div class="existing-prod col-6">
+            <h2>Existing Products</h2>
+            @foreach(var p in ViewBag.Products)
+            {
+                <a href="/products/@p.ProductId">@p.Name</a>
+            }
+    </div>
+</div>
