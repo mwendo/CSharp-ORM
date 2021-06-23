@@ -1,0 +1,11 @@
+
+<div class="dashboard">
+    <h1>@ViewBag.ThisWedding.WedderOne and @ViewBag.ThisWedding.WedderTwo Wedding</h1>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/logout">Log out</a>
+</div>
+
+@foreach(var w in ViewBag.ThisWedding.Guests)
+{
+    <h2>@w.User.FirstName @w.User.LastName</h2>
+}

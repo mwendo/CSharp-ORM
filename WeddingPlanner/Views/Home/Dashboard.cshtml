@@ -1,0 +1,34 @@
+<div class="dashboard">
+    <h1>Welcome to the Wedding Planner!</h1>
+    <a href="/logout">Log out</a>
+</div>
+
+
+<table class="table table-striped">
+<tr>
+    <th>Wedding</th>
+    <th>Date</th>
+    <th>Guest</th>
+    <th>Action</th>
+</tr>
+@foreach(var l in ViewBag.Weddings)
+{
+    <tr>
+        <td><a href="/wedding/details/@l.WeddingId">@l.WedderOne & @l.WedderTwo</a></td>
+        <td>@l.WeddingDate</td>
+        <td>@l.Guests.Count</td>
+        @* <td>@{
+                if(l.UserId == ViewBag.UserId)
+                {
+                    <a href="/delete/@l.WeddingId">Delete</a>
+                } else {
+                    <a href="/rsvp/@l.WeddingId">RSVP</a>
+                    <a href="/unrsvp/@l.WeddingId">Un-RSVP</a>
+                }
+        }
+        </td> *@
+    </tr>
+}
+</table>
+
+<a href="/planWedding" class="btn btn-primary">New Wedding</a>

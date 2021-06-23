@@ -1,0 +1,34 @@
+@model Wedding
+
+<div class="dashboard">
+    <h1>Plan Your Wedding</h1>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/logout">Log out</a>
+</div>
+
+<div>
+    <form action="/addWedding" method="post">
+        <div class="form-group">
+            <span asp-validation-for="WedderOne"></span>
+            <label for="WedderOne">Wedder One: </label>
+            <input asp-for="WedderOne" class="form-control">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="WedderTwo"></span>
+            <label for="WedderTwo">Wedder Two: </label>
+            <input asp-for="WedderTwo" class="form-control">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="WeddingDate"></span>
+            <label for="WeddingDate">Date: </label>
+            <input asp-for="WeddingDate" class="form-control">
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="WeddingAddress"></span>
+            <label for="WeddingAddress">Address: </label>
+            <input asp-for="WeddingAddress" class="form-control">
+        </div>
+        <input type="hidden" asp-for="UserId" value="@ViewBag.Id">
+        <button class="btn btn-primary">Create</button>
+    </form>
+</div>
