@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\wendo\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\wendo\\.nuget\\packages"
+    ]
+  }
+}

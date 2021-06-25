@@ -1,0 +1,42 @@
+@model List<Entertainment>
+
+<div class="dashboard">
+    <h1>Dojo Activity Center</h1>
+    <a href="/logout">Log out</a>
+</div>
+
+<table class="table table-striped">
+<tr>
+    <th>Activity</th>
+    <th>Date and Time</th>
+    <th>Duration</th>
+    <th>Event Coordinator</th>
+    <th>No. of Participants</th>
+    <th>Actions</th>
+</tr>
+@foreach(Entertainment a in Model)
+{
+    <tr>
+        <td><a href="/activities/details/@a.EntertainmentId">@a.Title</a></td>
+        <td>@a.EntertainmentDate.ToString("MMMM dd") @a.Time.ToString("hh:mm tt")</td>
+        <td>@a.Duration @a.DurationAmount</td>
+        <td>@a.Coordinator.Name</td>
+        <td>@a.Participants.Count</td>
+        <td>@{
+                if(a.UserId == ViewBag.UserId)
+                {
+                    <a href="/delete/@a.EntertainmentId">Delete</a>
+                } else {
+                    if(@a.Participants.Any(x => x.UserId == @ViewBag.UserId)) {
+                        <a href="/leave/@a.EntertainmentId">Leave</a>
+                    } else {
+                        <a href="/join/@a.EntertainmentId">Join</a>
+                    }
+                }
+        }
+        </td>
+    </tr>
+}
+</table>
+
+<a href="/planEntertainment" class="btn btn-primary">Add New Activity</a> 

@@ -1,0 +1,33 @@
+<div class="dashboard">
+    <h1>Dojo Activity Center</h1>
+    <a href="/dashboard">Home</a>
+    <a href="/logout">Log out</a>
+</div>
+
+<div class="d-flex justify-content-between">
+    <h1>@ViewBag.ThisEntertainment.Title</h1>
+    @{
+        if(ViewBag.ThisEntertainment.UserId == ViewBag.UserId)
+        {
+            <a href="/delete/@ViewBag.ThisEntertainment.EntertainmentId" class="btn btn-danger">Delete</a>
+        } else {
+            if(@ViewBag.Participating != null){
+                <a href="/leave/@ViewBag.ThisEntertainment.EntertainmentId" class="btn btn-primary">Leave</a>
+            } else{
+                <a href="/join/@ViewBag.ThisEntertainment.EntertainmentId" class="btn btn-primary">Join</a>
+            }
+        }
+    }
+</div>
+
+<div>
+    <h2>Event Coordinator: @ViewBag.ThisEntertainment.Coordinator.Name</h2>
+    <h3>Description: @ViewBag.ThisEntertainment.Description</h3>
+    <h3>Participants: </h3>
+    <ul>
+        @foreach(var a in @ViewBag.ThisEntertainment.Participants)
+        {
+            <li>@a.User.Name</li>
+        }
+    </ul>
+</div>
