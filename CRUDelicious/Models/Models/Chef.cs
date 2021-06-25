@@ -4,6 +4,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CRUDelicious.Models
 {
+    public class FutureDate : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if ((DateTime) value < DateTime.Now)
+                return new ValidationResult("Date must be in the future");
+            return ValidationResult.Success;
+        }
+    }
     public class Chef
     {
         [Key]
@@ -15,6 +24,7 @@ namespace CRUDelicious.Models
         public string LastName {get; set;}
         [Required]
         [DataType(DataType.Date)]
+        [FutureDate]
         public DateTime DOB {get;set;}
         public DateTime CreatedAt {get;set;} = DateTime.Now;
         public DateTime UpdatedAt {get;set;} = DateTime.Now;

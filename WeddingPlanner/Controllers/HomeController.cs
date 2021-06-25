@@ -137,8 +137,6 @@ namespace WeddingPlanner.Controllers
             return RedirectToAction("Dashboard");
         }
 
-        
-
         [HttpGet("planWedding")]
         public IActionResult PlanWedding()
         {

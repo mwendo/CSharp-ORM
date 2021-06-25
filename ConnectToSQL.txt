@@ -40,6 +40,17 @@ CHEAT SHEET FOR STARTING NEW MVC PROJECT AND ALL PACKAGES TO USE MYSQL DATABASE 
 • dotnet ef migrations add YourMigrationName
 • dotnet ef database update
 
+- SET SESSION
+• (STARTUP) "services.AddSession();" in ConfigureServices
+• (STARTUP) "app.UseSession();" in Configure
+• (HOMECONTROLLER) using Microsoft.AspNetCore.Http;
+•         public User LoggedID() //Return User model if valid - else null
+        {
+            int? LoggedID = HttpContext.Session.GetInt32("LoggedIn");
+            User Logged = dbContext.Users.FirstOrDefault(u => u.UserId == LoggedID);
+            return Logged;
+        }
+
 - HASHPASSWORDS(HomeController)
 • using Microsoft.AspNetCore.Identity;
 • if(ModelState.IsValid)
@@ -47,3 +58,24 @@ CHEAT SHEET FOR STARTING NEW MVC PROJECT AND ALL PACKAGES TO USE MYSQL DATABASE 
 		PasswordHasher<User> Hasher = new PasswordHasher<User>();
                 user.Password = Hasher.HashPassword(user, user.Password);
 	}
+•
+        [HttpPost("register")]
+        public IActionResult Register(User user)
+        {
+            if(ModelState.IsValid)
+            {
+                if(dbContext.Users.Any(u => u.Email == user.Email))
+                {
+                    ModelState.AddModelError("Email", "Email already in use!");
+                    return View("Index");
+                }
+                PasswordHasher<User> Hasher = new PasswordHasher<User>();
+                user.Password = Hasher.HashPassword(user, user.Password);
+                dbContext.Add(user);
+                dbContext.SaveChanges();
+                HttpContext.Session.SetInt32("LoggedIn", user.UserId);
+                return RedirectToAction("Success");
+            } else {
+                return View("Index");
+            }
+        }
